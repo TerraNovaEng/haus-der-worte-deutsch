@@ -89,11 +89,13 @@
             background: var(--primary-hover);
         }
         .link-card {
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 15px;
             background: white;
             border: 2px solid var(--border);
             color: var(--text);
-            padding: 20px;
+            padding: 18px 20px;
             margin: 15px 0;
             border-radius: 10px;
             text-decoration: none;
@@ -107,6 +109,15 @@
             background: #e0e7ff;
             color: var(--primary);
             transform: translateY(-2px);
+        }
+        .card-icon {
+            font-size: 1.5rem;
+            background: #f3f4f6;
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     </style>
 </head>
@@ -124,16 +135,20 @@
         <p>Select a module or app below to start practicing:</p>
         
         <a class="link-card" href="https://terranovaeng.github.io/Deutsch/" target="_blank">
-            Deutsch Module 1
+            <span class="card-icon">📚</span>
+            <span>Deutsch Module 1</span>
         </a>
         <a class="link-card" href="https://terranovaeng.github.io/GermanFlashcardsApp/" target="_blank">
-            German Flashcards & Matching Game
+            <span class="card-icon">🃏</span>
+            <span>German Flashcards & Matching Game</span>
         </a>
         <a class="link-card" href="https://terranovaeng.github.io/Learning-German/" target="_blank">
-            Learning German Hub
+            <span class="card-icon">🚀</span>
+            <span>Learning German Hub</span>
         </a>
         <a class="link-card" href="https://terranovaeng.github.io/haus-der-worte/" target="_blank">
-            Haus der Worte
+            <span class="card-icon">🏠</span>
+            <span>Haus der Worte</span>
         </a>
     </div>
 
