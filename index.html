@@ -7,9 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Haus-der-Worte German Hub</title>
     
-    <!-- PWA & Mobile Icons -->
+    <!-- PWA & Mobile Meta Tags -->
     <link rel="icon" href="https://fav.farm/🇩🇪">
     <link rel="apple-touch-icon" href="icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="German Hub">
 
     <style>
         :root {
@@ -49,6 +52,36 @@
             color: #4b5563;
             margin-bottom: 30px;
         }
+        /* Offline Banner Style */
+        #offline-banner {
+            display: none;
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        /* Install Button Style */
+        #install-btn {
+            display: none;
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
+            transition: background 0.2s ease;
+        }
+        #install-btn:hover {
+            background: var(--primary-hover);
+        }
         .link-card {
             display: block;
             background: white;
@@ -73,6 +106,14 @@
 </head>
 <body>
     <div class="container">
+        <!-- Offline Warning Banner -->
+        <div id="offline-banner">
+            You are currently offline. External study modules require internet connectivity.
+        </div>
+
+        <!-- Custom Install Button -->
+        <button id="install-btn">Install Hub App</button>
+
         <h1>Haus-der-Worte German Hub</h1>
         <p>Select a module or app below to start practicing:</p>
         
@@ -90,8 +131,9 @@
         </a>
     </div>
 
-    <!-- Service Worker Registration Script -->
+    <!-- PWA Service Worker & Feature Scripts -->
     <script>
+        // 1. Service Worker Registration
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
@@ -99,6 +141,36 @@
                     .catch((err) => console.log('Service worker registration failed:', err));
             });
         }
+
+        // 2. Online / Offline Status Detection
+        const offlineBanner = document.getElementById('offline-banner');
+        function updateOnlineStatus() {
+            offlineBanner.style.display = navigator.onLine ? 'none' : 'block';
+        }
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+        updateOnlineStatus();
+
+        // 3. Custom Install Prompt Handler
+        let deferredPrompt;
+        const installBtn = document.getElementById('install-btn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.style.display = 'block';
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    installBtn.style.display = 'none';
+                }
+                deferredPrompt = null;
+            }
+        });
     </script>
 </body>
 </html>
