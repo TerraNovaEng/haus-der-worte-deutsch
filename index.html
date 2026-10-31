@@ -1,220 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>  
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#4f46e5">
+<html lang="de" translate="no">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Haus-der-Worte German Hub</title>
-    
-    <!-- PWA & Mobile Icons -->
-    <link rel="icon" href="https://fav.farm/🇩🇪">
-    <link rel="apple-touch-icon" href="icon-192.png">
-
-    <!-- Android & Mobile App Meta Tags -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="German Hub">
-
-    <!-- iOS Standalone Meta Tags -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="German Hub">
-
+    <title>German Theological Vocabulary & Sentence Workshop</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
-        :root {
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
-            --lilac: #c084fc;
-            --lilac-hover: #a855f7;
-            --bg: #f3f4f6;
-            --card-bg: #ffffff;
-            --text: #1f2937;
-            --border: #e5e7eb;
-        }
-        body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding: 40px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .container {
-            width: 100%;
-            max-width: 650px;
-            background: var(--card-bg);
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            text-align: center;
-        }
-        h1 {
-            margin-top: 0;
-            font-size: 2rem;
-            color: var(--primary);
-        }
-        p {
-            color: #4b5563;
-            margin-bottom: 30px;
-        }
-        /* Offline Warning Banner */
-        #offline-banner {
-            display: none;
-            background: #fee2e2;
-            color: #991b1b;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-            font-weight: 500;
-        }
-        /* Custom Android/PWA Install Button */
-        #install-btn {
-            display: none;
-            width: 100%;
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 14px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 1rem;
-            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
-            transition: background 0.2s ease;
-        }
-        #install-btn:hover {
-            background: var(--primary-hover);
-        }
-        .link-card {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: white;
-            border: 2px solid var(--border);
-            color: var(--text);
-            padding: 18px 20px;
-            margin: 15px 0;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        }
-        .link-card:hover {
-            border-color: var(--lilac);
-            background: #faf5ff;
-            color: #7e22ce;
-            transform: translateY(-2px);
-        }
-        .card-icon {
-            font-size: 1.5rem;
-            background: #f3f4f6;
-            padding: 10px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        .perspective { perspective: 1000px; }
+        .transform-style { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
     </style>
 </head>
-<body>
-    <div class="container">
-        <!-- Offline Warning Banner -->
-        <div id="offline-banner">
-            You are currently offline. External study modules require internet connectivity.
-        </div>
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans" x-data="vocabApp()" x-init="initData()">
 
-        <!-- Custom Android/PWA Install Button -->
-        <button id="install-btn">📱 Install Hub App</button>
-
-        <h1>Haus-der-Worte German Hub</h1>
-        <p>Select a module or app below to start practicing:</p>
-        
-        <a class="link-card" href="https://terranovaeng.github.io/BellaandStatistics/" target="_blank">
-            <span class="card-icon">💜</span>
-            <span>Bella and Statistics</span>
-        </a>
-        <a class="link-card" href="https://terranovaeng.github.io/PhysicsDeutschWords/" target="_blank">
-            <span class="card-icon">⚛️</span>
-            <span>CJ's Physics Deutsch Words & Complex Web Particle</span>
-        </a>
-        <a class="link-card" href="https://terranovaeng.github.io/TheologischeW-rter/" target="_blank">
-            <span class="card-icon">📖</span>
-            <span>Theologische Wörter</span>
-        </a>
-        <a class="link-card" href="https://terranovaeng.github.io/Deutsch/" target="_blank">
-            <span class="card-icon">📚</span>
-            <span>Deutsch Module 1</span>
-        </a>
-        <a class="link-card" href="https://terranovaeng.github.io/GermanFlashcardsApp/" target="_blank">
-            <span class="card-icon">🃏</span>
-            <span>German Matching Game</span>
-        </a>
-        <a class="link-card" href="https://terranovaeng.github.io/Learning-German/" target="_blank">
-            <span class="card-icon">🚀</span>
-            <span>Learning German Hub</span>
-        </a>
-        <a class="link-card" href="https://terranovaeng.github.io/haus-der-worte/" target="_blank">
-            <span class="card-icon">🏠</span>
-            <span>Haus der Worte</span>
-        </a>
-        <a class="link-card" href="https://terranovaeng.github.io/complexweb/" target="_blank">
-            <span class="card-icon">⚙️</span>
-            <span>Complex Web</span>
-        </a>
-        <a class="link-card" href="https://terranovaeng.github.io/EasySentencesBuilder/" target="_blank">
-            <span class="card-icon">📝</span>
-            <span>Easy Sentences Builder</span>
-        </a>
-    </div>
-
-    <!-- PWA Service Worker & Android Feature Scripts -->
-    <script>
-        // 1. Service Worker Registration
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then((reg) => console.log('Service worker registered successfully:', reg.scope))
-                    .catch((err) => console.log('Service worker registration failed:', err));
-            });
-        }
-
-        // 2. Online / Offline Status Detection
-        const offlineBanner = document.getElementById('offline-banner');
-        function updateOnlineStatus() {
-            offlineBanner.style.display = navigator.onLine ? 'none' : 'block';
-        }
-        window.addEventListener('online', updateOnlineStatus);
-        window.addEventListener('offline', updateOnlineStatus);
-        updateOnlineStatus();
-
-        // 3. Android / Browser Install Prompt Handler
-        let deferredPrompt;
-        const installBtn = document.getElementById('install-btn');
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            // Show the custom install button on Android/Desktop Chrome
-            installBtn.style.display = 'block';
-        });
-
-        installBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    installBtn.style.display = 'none';
-                }
-                deferredPrompt = null;
-            }
-        });
-    </script>
-</body>
-</html>
+    <!-- Header -->
+    <header class="bg-slate-800 border-b border-slate-700 py-6 px-4 sm:px-8 shadow-md">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <span class="text-xs uppercase tracking-widest text-amber-400 font-semibold">TerraNova Engineering Lab</span>
+                <h1 class="text-2xl sm:text-3xl font-bold text-white mt-1">German Study & Sentence Workshop</h1>
+                <div class="flex items-center gap-3 mt-1">
+                    <p class="text-slate-400 text-sm">Vocabulary, Flashcards, Quiz, Memory & Sentence Builder.</p>
+                    <span class="text-xs px-2.5 py-0.5 rounded bg-slate-900 border border-slate-700 text-amber-300 font-mono" x-text="'Source: ' + dataSource"></span>
+                </div>
+            </div>
+            <!-- View Mode Switcher -->
+            <div class="flex flex-wrap bg-slate-900 p-1 rounded-lg border border-slate-700">
+                <button @click="viewMode = 'list'" :class="viewMode === 'list' ? 'bg-amber-600 text-white' : 'text-slate-400 hover:text-white'" class="px-3 py-2 rounded-md text-sm font-medium transition">List</button>
+                <button @click="viewMode = 'cards'" :class="viewMode === 'cards' ? 'bg-amber-600 text-white' : 'text-slate-400 hover:text-white'" class="px-3 py-2 rounded-md text-sm font-medium transition">Flashcards</button>
+                <button @click="viewMode = 'quiz'; initQuiz()" :class="viewMode === 'quiz' ? 'bg-amber-600 text-white' : 'text-slate-400 hover:text-white'" class="px-3 py-2 rounded-md text-sm font-medium transition">Quiz</button>
+                <button @click="view
